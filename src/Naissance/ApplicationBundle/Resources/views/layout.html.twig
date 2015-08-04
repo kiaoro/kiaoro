@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+    	'@NaissanceApplicationBundle/Resources/public/css/*' 
+    	output='css/app.css'
+    	debug=false
+    %}
+        <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{# block sidebar #}
+    {# render(controller("NaissanceApplicationBundle:Page:sidebar")) #}
+{# endblock #}

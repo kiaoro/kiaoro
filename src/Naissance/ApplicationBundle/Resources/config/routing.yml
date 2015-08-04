@@ -1,0 +1,39 @@
+naissance_application_wishlist:
+    resource: "@NaissanceApplicationBundle/Resources/config/routing/wishlist.yml"
+    prefix:   /wishlist
+
+NaissanceApplicationBundle_homepage:
+    pattern:  /
+    defaults: { _controller: NaissanceApplicationBundle:Page:index }
+    requirements:
+        _method:  GET
+
+NaissanceApplicationBundle_about:
+    pattern:  /about
+    defaults: { _controller: NaissanceApplicationBundle:Page:about }
+    requirements:
+        _method:  GET
+
+NaissanceApplicationBundle_contact:
+    pattern:  /contact
+    defaults: { _controller: NaissanceApplicationBundle:Page:contact }
+    requirements:
+        _method:  GET|POST
+
+NaissanceApplicationBundle_blog_show:
+    pattern:  /{id}/{slug}
+    defaults: { _controller: NaissanceApplicationBundle:Blog:show }
+    requirements:
+        _method:  GET
+        id: \d+
+
+NaissanceApplicationBundle_comment_create:
+    pattern:  /comment/{blog_id}
+    defaults: { _controller: NaissanceApplicationBundle:Comment:create }
+    requirements:
+        _method:  POST
+        blog_id: \d+
+
+NaissanceApplicationBundle_translation:
+    path:     /{_locale}/traduction/{name}
+    defaults: { _controller: NaissanceApplicationBundle:Page:translation }

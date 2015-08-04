@@ -1,0 +1,6 @@
+services:
+    naissance_user.registration.form.type:
+        class: Naissance\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: naissance_user_registration }

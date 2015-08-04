@@ -1,0 +1,4 @@
+parameters:
+    # Blogger contact email address
+    naissance_application.emails.contact_email: contact@email.com
+    naissance_application.comments.latest_comment_limit: 10

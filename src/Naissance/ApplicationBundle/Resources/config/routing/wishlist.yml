@@ -1,0 +1,30 @@
+wishlist:
+    path:     /
+    defaults: { _controller: "NaissanceApplicationBundle:Wishlist:index" }
+
+wishlist_show:
+    path:     /{id}/show
+    defaults: { _controller: "NaissanceApplicationBundle:Wishlist:show" }
+
+wishlist_new:
+    path:     /new
+    defaults: { _controller: "NaissanceApplicationBundle:Wishlist:new" }
+
+wishlist_create:
+    path:     /create
+    defaults: { _controller: "NaissanceApplicationBundle:Wishlist:create" }
+    requirements: { _method: post }
+
+wishlist_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "NaissanceApplicationBundle:Wishlist:edit" }
+
+wishlist_update:
+    path:     /{id}/update
+    defaults: { _controller: "NaissanceApplicationBundle:Wishlist:update" }
+    requirements: { _method: post|put }
+
+wishlist_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "NaissanceApplicationBundle:Wishlist:delete" }
+    requirements: { _method: post|delete }

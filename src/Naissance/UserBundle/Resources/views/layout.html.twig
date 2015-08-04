@@ -1,0 +1,27 @@
+
+{% extends "NaissanceApplicationBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+    	'@NaissanceUserBundle/Resources/public/css/*' 
+    	output='css/user.css'
+    	debug=false
+    %}
+        <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+
+{% block body %}
+
+  {% for key, message in app.session.flashbag.all() %}
+    <div class="alert alert-{{ key }}">
+      {{ message|trans({}, 'FOSUserBundle') }}
+    </div>
+  {% endfor %}
+
+  {% block fos_user_content %}
+  {% endblock fos_user_content %}
+
+{% endblock %}

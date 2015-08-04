@@ -1,0 +1,41 @@
+{% extends 'NaissanceApplicationBundle::layout.html.twig' %}
+
+{% block body %}
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <!--<hgroup>
+            <h2>{% block blog_title %}<a href="#">test</a>{% endblock %}</h2>
+            <h3>{% block blog_tagline %}<a href="#">tests in Symfony2</a>{% endblock %}</h3>
+        </hgroup>-->
+        <h1>Welcome to test</h1>
+        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>
+            <a class="btn btn-lg btn-primary" href="#" role="button">Subscribe &raquo;</a>
+        </p>
+    </div>
+
+        
+	{% for blog in blogs %}
+        <article class="blog">
+            <div class="date"><time datetime="{{ blog.created|date('c') }}">{{ blog.created|date('l, F j, Y') }}</time></div>
+            <header>
+                <h2><a href="{{ path('NaissanceApplicationBundle_blog_show', { 'id': blog.id, 'slug': blog.slug }) }}">{{ blog.title }}</a></h2>
+            </header>
+
+            <img src="{{ asset(['images/', blog.image]|join) }}" />
+            <div class="snippet">
+                <p>{{ blog.blog(500) }}</p>
+                <p class="continue"><a href="{{ path('NaissanceApplicationBundle_blog_show', { 'id': blog.id, 'slug': blog.slug }) }}">Continue reading...</a></p>
+            </div>
+
+            <footer class="meta">
+                <p>Comments: <a href="{{ path('NaissanceApplicationBundle_blog_show', { 'id': blog.id, 'slug': blog.slug }) }}#comments">{{ blog.comments|length }}</a></p>
+                <p>Posted by <span class="highlight">{{ blog.author }}</span> at {{ blog.created|date('h:iA') }}</p>
+                <p>Tags: <span class="highlight">{{ blog.tags }}</span></p>
+            </footer>
+        </article>
+    {% else %}
+        <p>There are no blog entries for symblog</p>
+    {% endfor %}
+{% endblock %}
