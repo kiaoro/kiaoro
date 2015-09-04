@@ -3,18 +3,17 @@
 namespace Naissance\ApplicationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Product
  *
- * @ORM\Table()
+ * @ORM\Table(name="product")
  * @ORM\Entity(repositoryClass="Naissance\ApplicationBundle\Repository\ProductRepository")
  */
 class Product
 {
     /**
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -22,10 +21,57 @@ class Product
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="text")
+     * @ORM\Column(name="title", type="string", nullable=false)
      */
-    private $url;
+    private $title;
+
+    /**
+     * @ORM\Column(name="description", type="text", nullable=false)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(name="price", type="decimal", scale=2, nullable=false)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(name="currency", type="integer", options={"default":1})
+     */
+    private $currency;
+
+    /**
+     * @ORM\Column(name="page_url", type="text", nullable=false)
+     */
+    private $pageUrl;
+
+    /**
+     * @ORM\Column(name="image_url", type="text", nullable=true)
+     */
+    private $imageUrl;
+
+    /**
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    private $updated;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Naissance\UserBundle\Entity\Wishlist")
+     * @ORM\JoinColumn(name="wishlist_id", referencedColumnName="id", nullable=false)
+     */
+    private $wishlist;
+
+
+    public function __construct()
+    {
+        $this->setCreated(new \DateTime());
+        $this->setUpdated(new \DateTime());
+    }
 
 }

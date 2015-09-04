@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class WishlistType extends AbstractType
+class ProductType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,24 +15,21 @@ class WishlistType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type_id', 'choice', array(
-                'label' => 'Type', 
+            ->add('title')
+            ->add('description', 'textarea')
+            ->add('price')
+            ->add('currency', 'choice', array(
+                'label' => 'Currency', 
                 'data' => '1', 
                 'choices'   => array(
-                    '1' => 'foo', 
-                    '2' => 'bar'
+                    '1' => 'EUR', 
+                    '2' => 'USD'
                 ),
                 'required'  => true,
-                'expanded' => true,
                 'multiple' => false, 
             ))
-            ->add('title')
-            ->add('date', 'date')
-            ->add('message', 'textarea')
-            ->add('address')
-            ->add('zip_code')
-            ->add('city')
-            ->add('country')
+            ->add('pageUrl')
+            ->add('imageUrl')
         ;
     }
     
@@ -42,7 +39,7 @@ class WishlistType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Naissance\ApplicationBundle\Entity\Wishlist'
+            'data_class' => 'Naissance\ApplicationBundle\Entity\Product'
         ));
     }
 
@@ -51,6 +48,6 @@ class WishlistType extends AbstractType
      */
     public function getName()
     {
-        return 'naissance_applicationbundle_wishlist';
+        return 'naissance_applicationbundle_product';
     }
 }

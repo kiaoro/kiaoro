@@ -21,34 +21,33 @@ class WishlistController extends Controller
      */
     public function indexAction()
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('NaissanceApplicationBundle:Wishlist')->findAll();
-
+        $wishlists = $em->getRepository('NaissanceApplicationBundle:Wishlist')->findByUser($user);
         return $this->render('NaissanceApplicationBundle:Wishlist:index.html.twig', array(
-            'entities' => $entities,
+            'wishlists' => $wishlists,
         ));
     }
+
     /**
      * Creates a new Wishlist entity.
      *
      */
     public function createAction(Request $request)
     {
-        $entity = new Wishlist();
-        $form = $this->createCreateForm($entity);
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $wishlist = new Wishlist();
+        $wishlist->setUser($user);
+        $form = $this->createCreateForm($wishlist);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($wishlist);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('wishlist_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('wishlist'));
         }
-
         return $this->render('NaissanceApplicationBundle:Wishlist:new.html.twig', array(
-            'entity' => $entity,
+            'entity' => $wishlist,
             'form'   => $form->createView(),
         ));
     }
@@ -56,19 +55,17 @@ class WishlistController extends Controller
     /**
      * Creates a form to create a Wishlist entity.
      *
-     * @param Wishlist $entity The entity
+     * @param Wishlist $wishlist The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Wishlist $entity)
+    private function createCreateForm(Wishlist $wishlist)
     {
-        $form = $this->createForm(new WishlistType(), $entity, array(
+        $form = $this->createForm(new WishlistType(), $wishlist, array(
             'action' => $this->generateUrl('wishlist_create'),
             'method' => 'POST',
         ));
-
         $form->add('submit', 'submit', array('label' => 'Create'));
-
         return $form;
     }
 
@@ -78,11 +75,10 @@ class WishlistController extends Controller
      */
     public function newAction()
     {
-        $entity = new Wishlist();
-        $form   = $this->createCreateForm($entity);
-
+        $wishlist = new Wishlist();
+        $form = $this->createCreateForm($wishlist);
         return $this->render('NaissanceApplicationBundle:Wishlist:new.html.twig', array(
-            'entity' => $entity,
+            'wishlist' => $wishlist,
             'form'   => $form->createView(),
         ));
     }
@@ -91,20 +87,16 @@ class WishlistController extends Controller
      * Finds and displays a Wishlist entity.
      *
      */
-    public function showAction($id)
+    public function showAction($wishlistId)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('NaissanceApplicationBundle:Wishlist')->find($id);
-
-        if (!$entity) {
+        $wishlist = $em->getRepository('NaissanceApplicationBundle:Wishlist')->findOneById($wishlistId);
+        if (!$wishlist) {
             throw $this->createNotFoundException('Unable to find Wishlist entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-
+        $deleteForm = $this->createDeleteForm($wishlistId);
         return $this->render('NaissanceApplicationBundle:Wishlist:show.html.twig', array(
-            'entity'      => $entity,
+            'wishlist'    => $wishlist,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -113,21 +105,18 @@ class WishlistController extends Controller
      * Displays a form to edit an existing Wishlist entity.
      *
      */
-    public function editAction($id)
+    public function editAction($wishlistId)
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('NaissanceApplicationBundle:Wishlist')->find($id);
-
-        if (!$entity) {
+        $wishlist = $em->getRepository('NaissanceApplicationBundle:Wishlist')->findOneBy(array('id' => $wishlistId, 'user' => $user));
+        if (!$wishlist) {
             throw $this->createNotFoundException('Unable to find Wishlist entity.');
         }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
+        $editForm = $this->createEditForm($wishlist);
+        $deleteForm = $this->createDeleteForm($wishlistId);
         return $this->render('NaissanceApplicationBundle:Wishlist:edit.html.twig', array(
-            'entity'      => $entity,
+            'wishlist'    => $wishlist,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -136,86 +125,77 @@ class WishlistController extends Controller
     /**
     * Creates a form to edit a Wishlist entity.
     *
-    * @param Wishlist $entity The entity
+    * @param Wishlist $wishlist The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Wishlist $entity)
+    private function createEditForm(Wishlist $wishlist)
     {
-        $form = $this->createForm(new WishlistType(), $entity, array(
-            'action' => $this->generateUrl('wishlist_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new WishlistType(), $wishlist, array(
+            'action' => $this->generateUrl('wishlist_update', array('wishlistId' => $wishlist->getId())),
             'method' => 'PUT',
         ));
-
         $form->add('submit', 'submit', array('label' => 'Update'));
-
         return $form;
     }
+
     /**
      * Edits an existing Wishlist entity.
      *
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, $wishlistId)
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('NaissanceApplicationBundle:Wishlist')->find($id);
-
-        if (!$entity) {
+        $wishlist = $em->getRepository('NaissanceApplicationBundle:Wishlist')->findOneBy(array('wishlistId' => $wishlistId, 'user' => $user));
+        if (!$wishlist) {
             throw $this->createNotFoundException('Unable to find Wishlist entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($wishlistId);
+        $editForm = $this->createEditForm($wishlist);
         $editForm->handleRequest($request);
-
         if ($editForm->isValid()) {
             $em->flush();
-
-            return $this->redirect($this->generateUrl('wishlist_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('wishlist_edit', array('wishlistId' => $wishlistId)));
         }
-
         return $this->render('NaissanceApplicationBundle:Wishlist:edit.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => $wishlist,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Wishlist entity.
      *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, $wishlistId)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($wishlistId);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('NaissanceApplicationBundle:Wishlist')->find($id);
-
-            if (!$entity) {
+            $wishlist = $em->getRepository('NaissanceApplicationBundle:Wishlist')->find($wishlistId);
+            if (!$wishlist) {
                 throw $this->createNotFoundException('Unable to find Wishlist entity.');
             }
-
-            $em->remove($entity);
+            $em->remove($wishlist);
             $em->flush();
         }
-
         return $this->redirect($this->generateUrl('wishlist'));
     }
 
     /**
      * Creates a form to delete a Wishlist entity by id.
      *
-     * @param mixed $id The entity id
+     * @param mixed $wishlistId The entity id
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($wishlistId)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('wishlist_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('wishlist_delete', array('wishlistId' => $wishlistId)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

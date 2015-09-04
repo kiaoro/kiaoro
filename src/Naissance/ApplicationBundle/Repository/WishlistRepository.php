@@ -3,6 +3,7 @@
 namespace Naissance\ApplicationBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Naissance\UserBundle\Entity\User;
 
 /**
  * WishlistRepository
@@ -12,4 +13,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class WishlistRepository extends EntityRepository
 {
+
+    public function getWishlistByWishlistIdAndUser($wishlistId, User $user)
+    {
+        $qb = $this->createQueryBuilder('w')
+        ->select('w')
+        ->where('w.id = :wishlist_id')
+        ->andWhere('w.user = :user')
+        ->setParameter('wishlist_id', $wishlistId)
+        ->setParameter('user', $user);
+
+        return $qb->getQuery()->getSingleResult();
+    }
+
+    // public function getUserWishlists($userId) {
+    //     return $this->findBy(
+    //         array('user_id' => $userId), 
+    //         array('id' => 'desc') // Tri
+    //     );
+    // }
+
 }

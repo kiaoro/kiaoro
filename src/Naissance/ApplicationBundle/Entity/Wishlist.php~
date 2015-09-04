@@ -1,0 +1,93 @@
+<?php
+
+namespace Naissance\ApplicationBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * Wishlist
+ *
+ * @ORM\Table(name="wishlist")
+ * @ORM\Entity(repositoryClass="Naissance\ApplicationBundle\Repository\WishlistRepository")
+ */
+class Wishlist
+{
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(name="type_id", type="integer", options={"default":1})
+     */
+    private $typeId;
+
+    /**
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(name="date", type="date", nullable=false)
+     */
+    private $date;
+
+    /**
+     * @ORM\Column(name="message", type="text", nullable=false)
+     */
+    private $message;
+
+    /**
+     * @ORM\Column(name="address", type="text", nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(name="zip_code", type="text", nullable=true)
+     */
+    private $zipCode;
+
+    /**
+     * @ORM\Column(name="city", type="text", nullable=true)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(name="country", type="text", nullable=true)
+     */
+    private $country;
+
+    /**
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    private $updated;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Naissance\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     */
+    private $user;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Naissance\ApplicationBundle\Entity\Product", mappedBy="wishlist", cascade="remove")
+    */
+    private $products;
+
+
+    public function __construct()
+    {
+        $this->setCreated(new \DateTime());
+        $this->setUpdated(new \DateTime());
+    }
+
+
+}

@@ -1,0 +1,40 @@
+product:
+    path:     /{wishlistId}
+    defaults: { _controller: "NaissanceApplicationBundle:Product:index" }
+
+#product_show:
+#    path:     /{productId}/show
+#    defaults: { _controller: "NaissanceApplicationBundle:Product:show" }
+
+product_new:
+    path:     /{wishlistId}/new
+    defaults: { _controller: "NaissanceApplicationBundle:Product:new" }
+
+product_create:
+    path:     /{wishlistId}/create
+    defaults: { _controller: "NaissanceApplicationBundle:Product:create" }
+    requirements: { _method: post }
+
+product_edit:
+    path:     /{productId}/edit
+    defaults: { _controller: "NaissanceApplicationBundle:Product:edit" }
+
+product_update:
+    path:     /{productId}/update
+    defaults: { _controller: "NaissanceApplicationBundle:Product:update" }
+    requirements: { _method: post|put }
+
+product_delete:
+    path:     /{productId}/delete
+    defaults: { _controller: "NaissanceApplicationBundle:Product:delete" }
+    requirements: { _method: post|delete }
+
+#product_add:
+#    path:     /{productId}/add
+#    defaults: { _controller: "NaissanceApplicationBundle:Product:addToWishlist" }
+#   requirements: { _method: post|put }
+
+#product_remove:
+#    path:     /{productId}/remove
+#    defaults: { _controller: "NaissanceApplicationBundle:Product:removeFromWishlist" }
+#    requirements: { _method: post|delete }

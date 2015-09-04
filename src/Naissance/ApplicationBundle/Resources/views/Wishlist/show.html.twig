@@ -1,36 +1,60 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Wishlist</h1>
+    <!--<h1>Wishlist</h1>-->
 
-    <table class="record_properties">
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-success" role="alert">{{ flashMessage }}</div>
+    {% endfor %}
+
+    <table class="record_properties table table-bordered" >
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ entity.id }}</td>
+                <td>{{ wishlist.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
+                <th>Title</th>
+                <td>{{ wishlist.title }}</td>
             </tr>
             <tr>
                 <th>Message</th>
-                <td>{{ entity.message }}</td>
+                <td>{{ wishlist.message }}</td>
+            </tr>
+            <tr>
+                <th>Products</th>
+                <td>
+                    <ul>
+                    {% for product in wishlist.products %}
+                        <li>{{product.title}}</li>
+                    {% endfor %}
+                    </ul>
+                </td>
             </tr>
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('wishlist') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('wishlist_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('wishlist') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('wishlist_edit', { 'wishlistId': wishlist.id }) }}">
+                Edit
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('product', { 'wishlistId': wishlist.id }) }}">All products</a>
+        </li>
+    </ul>
+
+
 {% endblock %}

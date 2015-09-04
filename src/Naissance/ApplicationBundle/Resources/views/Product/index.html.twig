@@ -1,0 +1,46 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <!--<h1>Product list</h1>-->
+
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-success" role="alert">{{ flashMessage }}</div>
+    {% endfor %}
+
+    <table class="records_list table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td><a href="{{ path('product_edit', { 'productId': product.id }) }}">Edit</a></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br />
+    <br />
+
+    <ul>
+        <li>
+            <a href="{{ path('product_new', { 'wishlistId': wishlist.id }) }}">Create a new entry</a>
+        </li>
+        <li>
+            <a href="{{ path('wishlist_show', { 'wishlistId': wishlist.id }) }}">Back to list</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -3,7 +3,7 @@ wishlist:
     defaults: { _controller: "NaissanceApplicationBundle:Wishlist:index" }
 
 wishlist_show:
-    path:     /{id}/show
+    path:     /{wishlistId}/show
     defaults: { _controller: "NaissanceApplicationBundle:Wishlist:show" }
 
 wishlist_new:
@@ -16,15 +16,15 @@ wishlist_create:
     requirements: { _method: post }
 
 wishlist_edit:
-    path:     /{id}/edit
+    path:     /{wishlistId}/edit
     defaults: { _controller: "NaissanceApplicationBundle:Wishlist:edit" }
 
 wishlist_update:
-    path:     /{id}/update
+    path:     /{wishlistId}/update
     defaults: { _controller: "NaissanceApplicationBundle:Wishlist:update" }
     requirements: { _method: post|put }
 
 wishlist_delete:
-    path:     /{id}/delete
+    path:     /{wishlistId}/delete
     defaults: { _controller: "NaissanceApplicationBundle:Wishlist:delete" }
     requirements: { _method: post|delete }

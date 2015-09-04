@@ -1,3 +1,7 @@
+naissance_application_product:
+    resource: "@NaissanceApplicationBundle/Resources/config/routing/product.yml"
+    prefix:   /product
+
 naissance_application_wishlist:
     resource: "@NaissanceApplicationBundle/Resources/config/routing/wishlist.yml"
     prefix:   /wishlist

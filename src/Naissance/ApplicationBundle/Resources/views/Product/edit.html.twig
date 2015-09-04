@@ -1,15 +1,16 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <!--<h1>Wishlist creation</h1>-->
+    <h1>Product edit</h1>
 
-    {{ form(form) }}
+    {{ form(edit_form) }}
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('wishlist') }}">
+        <a href="{{ path('product') }}">
             Back to the list
         </a>
     </li>
+    <li>{{ form(delete_form) }}</li>
 </ul>
 {% endblock %}
