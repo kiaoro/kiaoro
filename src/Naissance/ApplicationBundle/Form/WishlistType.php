@@ -26,13 +26,14 @@ class WishlistType extends AbstractType
                 'expanded' => true,
                 'multiple' => false, 
             ))
-            ->add('title')
+            ->add('title', 'text')
             ->add('date', 'date')
             ->add('message', 'textarea')
-            ->add('address')
-            ->add('zip_code')
-            ->add('city')
-            ->add('country')
+            ->add('file', 'file')
+            ->add('address', 'text')
+            ->add('zip_code', 'text')
+            ->add('city', 'text')
+            ->add('country', 'text')
         ;
     }
     

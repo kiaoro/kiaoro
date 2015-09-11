@@ -8,6 +8,10 @@
 /bin/
 /composer.phar
 /vendor/
+/bower_components/
+/node_modules/
 /web/bundles/
+/web/uploads/
 kiaoro.sublime-project
 kiaoro.sublime-workspace
+

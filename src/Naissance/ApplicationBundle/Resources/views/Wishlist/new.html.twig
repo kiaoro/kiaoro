@@ -3,7 +3,9 @@
 {% block body -%}
     <!--<h1>Wishlist creation</h1>-->
 
-    {{ form(form) }}
+	<form action="#" method="post" {{ form_enctype(form) }}>
+	    {{ form_widget(form) }}
+	</form>
 
         <ul class="record_actions">
     <li>

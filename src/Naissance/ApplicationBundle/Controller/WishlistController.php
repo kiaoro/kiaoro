@@ -4,6 +4,7 @@ namespace Naissance\ApplicationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Naissance\ApplicationBundle\Entity\Wishlist;
 use Naissance\ApplicationBundle\Form\WishlistType;
@@ -39,13 +40,17 @@ class WishlistController extends Controller
         $wishlist = new Wishlist();
         $wishlist->setUser($user);
         $form = $this->createCreateForm($wishlist);
+
         $form->handleRequest($request);
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($wishlist);
             $em->flush();
+
             return $this->redirect($this->generateUrl('wishlist'));
         }
+
         return $this->render('NaissanceApplicationBundle:Wishlist:new.html.twig', array(
             'entity' => $wishlist,
             'form'   => $form->createView(),
@@ -75,6 +80,9 @@ class WishlistController extends Controller
      */
     public function newAction()
     {
+        // if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+        //     throw new AccessDeniedException();
+        // }
         $wishlist = new Wishlist();
         $form = $this->createCreateForm($wishlist);
         return $this->render('NaissanceApplicationBundle:Wishlist:new.html.twig', array(
@@ -147,7 +155,7 @@ class WishlistController extends Controller
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        $wishlist = $em->getRepository('NaissanceApplicationBundle:Wishlist')->findOneBy(array('wishlistId' => $wishlistId, 'user' => $user));
+        $wishlist = $em->getRepository('NaissanceApplicationBundle:Wishlist')->findOneBy(array('id' => $wishlistId, 'user' => $user));
         if (!$wishlist) {
             throw $this->createNotFoundException('Unable to find Wishlist entity.');
         }
@@ -159,7 +167,7 @@ class WishlistController extends Controller
             return $this->redirect($this->generateUrl('wishlist_edit', array('wishlistId' => $wishlistId)));
         }
         return $this->render('NaissanceApplicationBundle:Wishlist:edit.html.twig', array(
-            'entity'      => $wishlist,
+            'wishlist'    => $wishlist,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
