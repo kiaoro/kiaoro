@@ -1,13 +1,46 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <!--<h1>Wishlist creation</h1>-->
 
-	<form action="#" method="post" {{ form_enctype(form) }}>
-	    {{ form_widget(form) }}
-	</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#datetimepicker1').datetimepicker({
+            format: 'YYYY-MM-DD', 
+            allowInputToggle: true
+        });
+    });
+</script>
 
-        <ul class="record_actions">
+
+<!--<h1>Wishlist creation</h1>-->
+
+{{ form_start(form, {'class': 'myclass'}) }}
+
+    {{ form_errors(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.date) }}
+        <div class='input-group date' id="datetimepicker1">
+            {{ form_widget(form.date) }}
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+
+    {{ form_row(form.type_id) }}
+    {{ form_row(form.title) }}
+    
+    {{ form_row(form.message) }}
+    {{ form_row(form.file) }}
+    {{ form_row(form.address) }}
+    {{ form_row(form.zip_code) }}
+    {{ form_row(form.city) }}
+    {{ form_row(form.country) }}
+
+{{ form_end(form) }}
+
+<ul class="record_actions">
     <li>
         <a href="{{ path('wishlist') }}">
             Back to the list

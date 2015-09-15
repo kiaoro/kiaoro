@@ -27,7 +27,13 @@ class WishlistType extends AbstractType
                 'multiple' => false, 
             ))
             ->add('title', 'text')
-            ->add('date', 'date')
+            ->add('date', 'date', array(
+                'input' => 'string', 
+                'widget' => 'single_text', 
+                'format' => 'yyyy-MM-dd',
+                'required'  => true,
+                //'attr' => array('class' => 'input-group date'), 
+            ))
             ->add('message', 'textarea')
             ->add('file', 'file')
             ->add('address', 'text')

@@ -17,6 +17,23 @@ module.exports = function(grunt) {
       }, 
     },
 
+    copy: {
+      dist: {
+       files: [{
+         expand: true,
+         cwd: 'bower_components/font-awesome/fonts/',
+         src: ['*'],
+         dest: 'web/fonts/'
+       }, 
+       {
+         expand: true,
+         cwd: 'bower_components/jquery/dist/',
+         src: ['jquery.min.js'],
+         dest: 'web/js/'
+       }]
+      }
+    },
+
 		less: {
       build: {
         options: {
@@ -25,10 +42,11 @@ module.exports = function(grunt) {
         },
         files: {
           '<%= dirs.output %>/css/built.css': [
-            'bower_components/bootstrap/less/bootstrap.less', 
-            'bower_components/font-awesome/css/font-awesome.css'
-            'src/**/*.css', 
-            'src/**/*.less'
+            'bower_components/bootstrap/dist/css/bootstrap.css', 
+            'bower_components/font-awesome/css/font-awesome.min.css', 
+            'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css', 
+            'src/Naissance/**/*.css', 
+            'src/Naissance/**/*.less'
           ]
         }
       }
@@ -48,14 +66,14 @@ module.exports = function(grunt) {
 
     concat: {
       options: {
-        separator: ';', // permet d'ajouter un point-virgule entre chaque fichier concaténé.
+        separator: ';',
       },
       dist: {
         src: [
-        	'bower_components/jquery/dist/jquery.js',
-        	'bower_components/bootsrap/dist/js/bootstrap.js',
-          'bower_components/bootsrap/js/*.js', 
-          'src/**/*.js'
+        	'bower_components/bootsrap/dist/js/bootstrap.min.js',
+          'bower_components/moment/min/moment.min.js', 
+          'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js', 
+          'src/Naissance/**/*.js'
         ], 
         dest: '<%= dirs.output %>/js/built.js' // la destination finale
       }
@@ -78,18 +96,18 @@ module.exports = function(grunt) {
 
     watch: {
       stylesheets: { 
-        files: ['src/**/*.css', 'src/**/*.less'], 
+        files: ['src/Naissance/**/*.css', 'src/Naissance/**/*.less'], 
         tasks: ['css'] 
       },
       scripts: { 
-        files: 'src/**/*.js', 
+        files: 'src/Naissance/**/*.js', 
         tasks: ['javascript'] 
       } 
     }
 
 	});
 
-	grunt.registerTask('default', ['clean', 'css', 'javascript']);
+	grunt.registerTask('default', ['clean', 'copy', 'css', 'javascript']);
   grunt.registerTask('css', ['less', 'cssmin']);
   grunt.registerTask('javascript', ['concat', 'uglify']);
 

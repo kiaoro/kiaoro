@@ -34,6 +34,7 @@ class Wishlist
 
     /**
      * @ORM\Column(name="date", type="date", nullable=false)
+     * @Assert\NotBlank()
      */
     private $date;
 
